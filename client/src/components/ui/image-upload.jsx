@@ -12,10 +12,14 @@ const ImageUpload = ({ images = [], onChange, maxImages = 5 }) => {
 
   // Debug: Log environment variables
   React.useEffect(() => {
-    console.log('Cloudinary Environment Variables:');
+    console.log('=== Cloudinary Environment Variables Debug ===');
+    console.log('NODE_ENV:', import.meta.env.NODE_ENV);
+    console.log('MODE:', import.meta.env.MODE);
     console.log('VITE_CLOUDINARY_CLOUD_NAME:', import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
     console.log('VITE_CLOUDINARY_UPLOAD_PRESET:', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
     console.log('VITE_CLOUDINARY_API_KEY:', import.meta.env.VITE_CLOUDINARY_API_KEY ? 'Set' : 'Not set');
+    console.log('All env vars:', import.meta.env);
+    console.log('=== End Debug ===');
   }, []);
 
   const cld = new Cloudinary({
@@ -37,17 +41,18 @@ const ImageUpload = ({ images = [], onChange, maxImages = 5 }) => {
 
     try {
       const uploadPromises = files.map(async (file) => {
-        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-        const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+        // Fallback values for testing - replace with your actual values
+        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'YOUR_CLOUD_NAME';
+        const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'YOUR_UPLOAD_PRESET';
         
         console.log('Upload config:', { cloudName, uploadPreset });
         
-        if (!cloudName) {
-          throw new Error('Cloudinary cloud name not configured');
+        if (!cloudName || cloudName === 'YOUR_CLOUD_NAME') {
+          throw new Error('Please set VITE_CLOUDINARY_CLOUD_NAME in Render environment variables');
         }
         
-        if (!uploadPreset) {
-          throw new Error('Cloudinary upload preset not configured');
+        if (!uploadPreset || uploadPreset === 'YOUR_UPLOAD_PRESET') {
+          throw new Error('Please set VITE_CLOUDINARY_UPLOAD_PRESET in Render environment variables');
         }
 
         const formData = new FormData();
