@@ -164,7 +164,7 @@ const UserAuctionList = () => {
        </div>
 
         <div>
-          <Button asChild>
+          <Button asChild className="rounded-full px-6 py-6 shadow-sm bg-[#E2E687] text-primary hover:bg-[#E2E687]/90">
             {user?.role === 'admin' ? (
               <Link to="/admin/dashboard">Manage Admin</Link>
             ) : (
@@ -257,82 +257,87 @@ const AuctionCard = ({ auction, formatPrice, formatTimeLeft, getTimeColor }) => 
   };
 
   return (
-    <Card className="transition-shadow duration-200 hover:shadow-lg">
-      <div className="relative">
-        {auction.images && auction.images.length > 0 && (
-          <img
-            src={auction.images[0]}
-            alt={auction.title}
-            className="object-cover w-full h-48 rounded-t-lg"
-          />
-        )}
-        <Button
-          onClick={toggleWatch}
-          variant="ghost"
-          size="icon"
-          className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white"
-        >
-          <Heart 
-            className={`w-4 h-4 ${isWatched ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} 
-          />
-        </Button>
-        <Badge className="absolute top-2 left-2" variant="secondary">
-          {auction.category}
-        </Badge>
-      </div>
-
-      <CardContent className="p-4">
-        <Link to={`/auctions/${auction._id}`}>
-          <h3 className="mb-2 text-lg font-semibold transition-colors text-foreground hover:text-primary line-clamp-2">
-            {auction.title}
-          </h3>
-        </Link>
-
-        <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
-          {auction.description}
-        </p>
-
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <div className="text-sm text-muted-foreground">Current Bid</div>
-            <div className="text-xl font-bold text-foreground">
-              {formatPrice(auction.currentBid || auction.startingPrice)}
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm text-muted-foreground">Time Left</div>
-            <div className={`font-semibold ${getTimeColor(auction.auctionEndTime)}`}>
-              {formatTimeLeft(auction.auctionEndTime)}
-            </div>
-          </div>
+    <Card className="relative overflow-hidden transition-all duration-200 border-0 shadow-lg bg-white/20 backdrop-blur-lg hover:shadow-xl hover:bg-white/25">
+      {/* Gradient overlay effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#E2E687]/10 to-transparent opacity-50"></div>
+      
+      <div className="relative z-10">
+        <div className="relative">
+          {auction.images && auction.images.length > 0 && (
+            <img
+              src={auction.images[0]}
+              alt={auction.title}
+              className="object-cover w-full h-48"
+            />
+          )}
+          <Button
+            onClick={toggleWatch}
+            variant="ghost"
+            size="icon"
+            className="absolute transition-all border-0 rounded-full top-2 right-2 bg-white/30 backdrop-blur-lg hover:bg-white/40"
+          >
+            <Heart 
+              className={`w-4 h-4 ${isWatched ? 'fill-red-500 text-red-500' : 'text-foreground'}`} 
+            />
+          </Button>
+          <Badge className="absolute border-0 top-2 left-2 bg-white/30 backdrop-blur-lg text-foreground">
+            {auction.category}
+          </Badge>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <div className="flex items-center">
-            <Users className="w-4 h-4 mr-1" />
-            {auction.bidCount || 0} bids
-          </div>
-          <div className="flex items-center">
-            <Eye className="w-4 h-4 mr-1" />
-            {auction.metadata?.views || 0} views
-          </div>
-        </div>
-
-        {auction.currentBidder && (
-          <div className="pt-3 mt-3 border-t border-border">
-            <div className="text-sm text-muted-foreground">Highest Bidder</div>
-            <div className="text-sm font-medium text-foreground">
-              {auction.currentBidder.username}
-            </div>
-          </div>
-        )}
-
-        <Button asChild className="w-full mt-4">
+        <CardContent className="p-4">
           <Link to={`/auctions/${auction._id}`}>
-            Place Bid
+            <h3 className="mb-2 text-lg font-semibold transition-colors text-foreground hover:text-primary line-clamp-2">
+              {auction.title}
+            </h3>
           </Link>
-        </Button>
-      </CardContent>
+
+          <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
+            {auction.description}
+          </p>
+
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="text-sm text-muted-foreground">Current Bid</div>
+              <div className="text-xl font-bold text-foreground">
+                {formatPrice(auction.currentBid || auction.startingPrice)}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-sm text-muted-foreground">Time Left</div>
+              <div className={`font-semibold ${getTimeColor(auction.auctionEndTime)}`}>
+                {formatTimeLeft(auction.auctionEndTime)}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <Users className="w-4 h-4 mr-1" />
+              {auction.bidCount || 0} bids
+            </div>
+            <div className="flex items-center">
+              <Eye className="w-4 h-4 mr-1" />
+              {auction.metadata?.views || 0} views
+            </div>
+          </div>
+
+          {auction.currentBidder && (
+            <div className="pt-3 mt-3 border-t border-white/20">
+              <div className="text-sm text-muted-foreground">Highest Bidder</div>
+              <div className="text-sm font-medium text-foreground">
+                {auction.currentBidder.username}
+              </div>
+            </div>
+          )}
+
+          <Button asChild className="w-full mt-4 shadow-none bg-[#E2E687] text-primary rounded-full hover:bg-[#E2E687]/90 transition-all">
+            <Link to={`/auctions/${auction._id}`}>
+              Place Bid
+            </Link>
+          </Button>
+        </CardContent>
+      </div>
     </Card>
   );
 };

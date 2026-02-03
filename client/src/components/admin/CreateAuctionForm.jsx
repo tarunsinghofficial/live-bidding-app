@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { auctionAPI } from "../../lib/api";
 import toast from "react-hot-toast";
-import { Plus, X, DollarSign, Calendar as CalendarIcon, Clock as ClockIcon, Tag } from "lucide-react";
+import { Plus, X, DollarSign, Calendar as CalendarIcon, Clock as ClockIcon, Tag, Gavel } from "lucide-react";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "../../components/ui/popover"
 import { Checkbox } from "../../components/ui/checkbox"
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card"
 import ImageUpload from "../../components/ui/image-upload"
 import { format } from "date-fns"
 
@@ -182,50 +183,61 @@ const CreateAuctionForm = () => {
   };
 
   return (
-    <div className="max-w-4xl p-6 mx-auto">
-      <div className="p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="mb-8 text-3xl font-bold text-gray-900">
-          Create New Auction
-        </h1>
+    <div className="max-w-4xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
+      {/* Glassmorphic Card */}
+      <Card className="relative overflow-hidden bg-transparent border-0 shadow-2xl backdrop-blur-xl">
+       
+        <CardContent className="relative z-10 p-8 bg-white/30">
+          {/* Header */}
+          <div className="flex items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">
+                Create New Auction
+              </h1>
+              <p className="text-muted-foreground">
+                List your item and start receiving bids
+              </p>
+            </div>
+          </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="md:col-span-2">
-              <Label className="block mb-2 text-sm font-medium text-gray-700">
+              <Label className="block mb-2 text-sm font-medium text-foreground">
                 Auction Title
               </Label>
               <Input
                 {...register("title")}
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
                 placeholder="Enter auction title"
               />
               {errors.title && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.title.message}
                 </p>
               )}
             </div>
 
             <div className="md:col-span-2">
-              <Label className="block mb-2 text-sm font-medium text-gray-700">
+              <Label className="block mb-2 text-sm font-medium text-foreground">
                 Description
               </Label>
               <Textarea
                 {...register("description")}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
                 placeholder="Describe your item in detail"
               />
               {errors.description && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.description.message}
                 </p>
               )}
             </div>
 
             <div>
-              <Label className="block mb-2 text-sm font-medium text-gray-700">
+              <Label className="block mb-2 text-sm font-medium text-foreground">
                 <Tag className="inline w-4 h-4 mr-1" />
                 Category
               </Label>
@@ -233,10 +245,10 @@ const CreateAuctionForm = () => {
                 value={watch("category")}
                 onValueChange={(value) => setValue("category", value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="border-0 bg-white/90 backdrop-blur rounded-xl">
                   {categories.map((cat) => (
                     <SelectItem key={cat.value} value={cat.value}>
                       {cat.label}
@@ -245,7 +257,7 @@ const CreateAuctionForm = () => {
                 </SelectContent>
               </Select>
               {errors.category && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.category.message}
                 </p>
               )}
@@ -344,7 +356,7 @@ const CreateAuctionForm = () => {
             </div>
 
             <div>
-              <Label className="block mb-2 text-sm font-medium text-gray-700">
+              <Label className="block mb-2 text-sm font-medium text-foreground">
                 <DollarSign className="inline w-4 h-4 mr-1" />
                 Starting Price ($)
               </Label>
@@ -353,18 +365,18 @@ const CreateAuctionForm = () => {
                 type="number"
                 min="1"
                 step="0.01"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
                 placeholder="0.00"
               />
               {errors.startingPrice && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.startingPrice.message}
                 </p>
               )}
             </div>
 
             <div>
-              <Label className="block mb-2 text-sm font-medium text-gray-700">
+              <Label className="block mb-2 text-sm font-medium text-foreground">
                 Reserve Price ($) - Optional
               </Label>
               <Input
@@ -372,11 +384,11 @@ const CreateAuctionForm = () => {
                 type="number"
                 min="0"
                 step="0.01"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
                 placeholder="0.00"
               />
               {errors.reservePrice && (
-                <p className="mt-1 text-sm text-red-600">
+                <p className="mt-1 text-sm text-red-500">
                   {errors.reservePrice.message}
                 </p>
               )}
@@ -446,23 +458,24 @@ const CreateAuctionForm = () => {
           </div>
 
           <div className="flex justify-end space-x-4">
-            <button
+            <Button
               type="button"
               onClick={() => navigate("/admin/auctions")}
-              className="px-6 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-6 py-3 transition-all shadow-none bg-white/20 text-muted-foreground rounded-2xl hover:bg-white/30"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="px-6 py-3 shadow-none bg-[#E2E687] text-primary rounded-2xl hover:bg-[#E2E687]/90 hover:shadow-lg transition-all"
             >
               {isSubmitting ? "Creating..." : "Create Auction"}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

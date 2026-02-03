@@ -19,7 +19,7 @@ const App = () => {
   const showHeader = !['/', '/login', '/register'].includes(currentPath);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Navigation Header - Only show for authenticated routes */}
       {showHeader && (
         <header className="border-b shadow-sm bg-card">
