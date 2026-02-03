@@ -1,31 +1,70 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* App baseline */
-html,
-body,
-#root {
-  height: 100%;
+@layer base {
+  :root {
+    --background: 240 15% 96%; /* eggshell light */
+    --foreground: 220 30% 8%; /* ink-black */
+    --card: 240 15% 96%; /* eggshell */
+    --card-foreground: 220 30% 8%; /* ink-black */
+    --popover: 240 15% 96%; /* eggshell */
+    --popover-foreground: 220 30% 8%; /* ink-black */
+    --primary: 220 35% 15%; /* deep-space-blue */
+    --primary-foreground: 240 15% 96%; /* eggshell */
+    --secondary: 210 20% 65%; /* dusty-denim */
+    --secondary-foreground: 220 30% 8%; /* ink-black */
+    --muted: 210 20% 85%; /* dusty-denim light */
+    --muted-foreground: 220 30% 35%; /* blue-slate dark */
+    --accent: 210 25% 75%; /* dusty-denim medium */
+    --accent-foreground: 220 30% 8%; /* ink-black */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 240 15% 96%; /* eggshell */
+    --border: 210 20% 75%; /* dusty-denim medium */
+    --input: 210 20% 75%; /* dusty-denim medium */
+    --ring: 220 35% 15%; /* deep-space-blue */
+    --radius: 0.5rem;
+    --chart-1: 220 35% 15%;
+    --chart-2: 210 20% 65%;
+    --chart-3: 200 30% 45%;
+    --chart-4: 210 25% 55%;
+    --chart-5: 220 30% 35%;
+  }
+
+  .dark {
+    --background: 220 30% 5%; /* ink-black dark */
+    --foreground: 240 15% 96%; /* eggshell */
+    --card: 220 35% 15%; /* deep-space-blue */
+    --card-foreground: 240 15% 96%; /* eggshell */
+    --popover: 220 35% 15%; /* deep-space-blue */
+    --popover-foreground: 240 15% 96%; /* eggshell */
+    --primary: 210 20% 65%; /* dusty-denim */
+    --primary-foreground: 220 30% 5%; /* ink-black dark */
+    --secondary: 200 30% 45%; /* blue-slate */
+    --secondary-foreground: 240 15% 96%; /* eggshell */
+    --muted: 220 35% 20%; /* deep-space-blue muted */
+    --muted-foreground: 210 20% 75%; /* dusty-denim medium */
+    --accent: 210 25% 35%; /* blue-slate dark */
+    --accent-foreground: 240 15% 96%; /* eggshell */
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 240 15% 96%; /* eggshell */
+    --border: 220 35% 20%; /* deep-space-blue muted */
+    --input: 220 35% 20%; /* deep-space-blue muted */
+    --ring: 210 20% 65%; /* dusty-denim */
+    --chart-1: 210 20% 65%;
+    --chart-2: 200 30% 45%;
+    --chart-3: 220 35% 15%;
+    --chart-4: 210 25% 35%;
+    --chart-5: 220 30% 25%;
+  }
 }
 
-body {
-  margin: 0;
-}
-
-/* Small helper animations */
-@keyframes flash-green {
-  0% {
-    background-color: rgba(34, 197, 94, 0.25);
+@layer base {
+  * {
+    border-color: hsl(var(--border));
   }
-  100% {
-    background-color: transparent;
-  }
-}
-
-@keyframes flash-red {
-  0% {
-    background-color: rgba(239, 68, 68, 0.25);
-  }
-  100% {
-    background-color: transparent;
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
