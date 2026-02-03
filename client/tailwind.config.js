@@ -56,6 +56,12 @@ export default {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
+      },
+      backgroundImage: {
+        'gradient-primary': 'linear-gradient(135deg, #0d1321 0%, #1d2d44 35%, #3e5c76 70%, #748cab 100%)',
+        'gradient-secondary': 'linear-gradient(135deg, #f0ebd8 0%, #748cab 50%, #3e5c76 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #0d1321 0%, #1d2d44 50%, #3e5c76 100%)',
+        'gradient-light': 'linear-gradient(135deg, #f0ebd8 0%, #748cab 100%)'
       }
     }
   },

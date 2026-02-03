@@ -59,12 +59,13 @@
   }
 }
 
+
 @layer base {
   * {
     border-color: hsl(var(--border));
   }
   body {
-    background-color: hsl(var(--background));
+    @apply min-h-screen bg-gradient-to-b from-[#E8E8E8] via-[#D4D9D5] to-[#A0B2A5];
     color: hsl(var(--foreground));
   }
 }
