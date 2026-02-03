@@ -10,6 +10,14 @@ const ImageUpload = ({ images = [], onChange, maxImages = 5 }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  // Debug: Log environment variables
+  React.useEffect(() => {
+    console.log('Cloudinary Environment Variables:');
+    console.log('VITE_CLOUDINARY_CLOUD_NAME:', import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
+    console.log('VITE_CLOUDINARY_UPLOAD_PRESET:', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    console.log('VITE_CLOUDINARY_API_KEY:', import.meta.env.VITE_CLOUDINARY_API_KEY ? 'Set' : 'Not set');
+  }, []);
+
   const cld = new Cloudinary({
     cloud: {
       cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo',
@@ -29,24 +37,40 @@ const ImageUpload = ({ images = [], onChange, maxImages = 5 }) => {
 
     try {
       const uploadPromises = files.map(async (file) => {
+        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+        const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+        
+        console.log('Upload config:', { cloudName, uploadPreset });
+        
+        if (!cloudName) {
+          throw new Error('Cloudinary cloud name not configured');
+        }
+        
+        if (!uploadPreset) {
+          throw new Error('Cloudinary upload preset not configured');
+        }
+
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'auction_uploads');
+        formData.append('upload_preset', uploadPreset);
         formData.append('folder', 'live-bidding-app');
 
         const response = await fetch(
-          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'}/image/upload`,
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           {
             method: 'POST',
             body: formData,
           }
         );
 
+        const data = await response.json();
+        
         if (!response.ok) {
-          throw new Error('Upload failed');
+          console.error('Cloudinary error response:', data);
+          throw new Error(data.error?.message || data.message || 'Upload failed');
         }
 
-        const data = await response.json();
+        console.log('Upload successful:', data);
         return data.secure_url;
       });
 
@@ -54,7 +78,7 @@ const ImageUpload = ({ images = [], onChange, maxImages = 5 }) => {
       onChange([...images, ...newImageUrls]);
     } catch (error) {
       console.error('Upload error:', error);
-      alert('Failed to upload images. Please try again.');
+      alert(`Upload failed: ${error.message}. Please check your Cloudinary configuration.`);
     } finally {
       setUploading(false);
       setUploadProgress(0);

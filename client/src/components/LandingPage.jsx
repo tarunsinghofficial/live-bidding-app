@@ -2,36 +2,16 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { 
-  Gavel, 
   ArrowRight,
+  Gavel,
   Zap
 } from 'lucide-react';
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <Gavel className="w-8 h-8 text-primary" />
-              <span className="text-xl font-bold text-foreground">LiveBid</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild className="px-6 py-2 shadow-none bg-white/50 text-primary rounded-3xl hover:bg-white/70">
-                <Link to="/login">Sign In</Link>
-              </Button>
-              <Button asChild className="px-6 py-2 shadow-none bg-[#E2E687] text-primary rounded-3xl hover:bg-[#E2E687]/90">
-                <Link to="/register">Get Started</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
-      <section className="relative px-4 py-20 sm:px-6 lg:px-8">
+      <section className="relative px-4 py-20 pt-32 sm:px-6 lg:px-8"> {/* Added pt-32 to account for fixed navbar */}
         <div className="mx-auto text-center max-w-7xl">
           <Badge className="mb-4" variant="secondary">
             <Zap className="w-3 h-3 mr-1" />
