@@ -5,6 +5,10 @@ import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Label } from '../../components/ui/label';
+import { Gavel } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -38,66 +42,92 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link
-              to="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              create a new account
-            </Link>
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                {...register('email')}
-                type="email"
-                autoComplete="email"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        {/* Glassmorphic Card */}
+        <div className="relative p-8 overflow-hidden border-0 shadow-2xl bg-white/25 backdrop-blur-xl rounded-3xl">
+          {/* Gradient overlay effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#E2E687]/20 to-transparent opacity-50"></div>
+          
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Logo and Header */}
+            <div className="mb-8 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/30 backdrop-blur">
+                  <Gavel className="w-8 h-8 text-primary" />
+                </div>
+              </div>
+              <h2 className="mb-2 text-3xl font-bold text-foreground">
+                Welcome Back
+              </h2>
+              <p className="text-muted-foreground">
+                Sign in to your account to continue
+              </p>
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                {...register('password')}
-                type="password"
-                autoComplete="current-password"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-              )}
-            </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isSubmitting || loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting || loading ? 'Signing in...' : 'Sign in'}
-            </button>
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="email" className="block mb-2 text-sm font-medium text-foreground">
+                    Email Address
+                  </Label>
+                  <Input
+                    {...register('email')}
+                    type="email"
+                    autoComplete="email"
+                    className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
+                    placeholder="Enter your email"
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="password" className="block mb-2 text-sm font-medium text-foreground">
+                    Password
+                  </Label>
+                  <Input
+                    {...register('password')}
+                    type="password"
+                    autoComplete="current-password"
+                    className="w-full px-4 py-3 transition-all border-0 bg-white/20 backdrop-blur rounded-xl text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 focus:bg-white/30"
+                    placeholder="Enter your password"
+                  />
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting || loading}
+                className="w-full px-6 py-3 shadow-none bg-[#E2E687] text-primary rounded-2xl hover:bg-[#E2E687]/90 hover:shadow-lg transition-all font-medium"
+              >
+                {isSubmitting || loading ? 'Signing in...' : 'Sign in'}
+              </Button>
+            </form>
+
+            {/* Footer */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{' '}
+                <Link
+                  to="/register"
+                  className="font-medium text-primary hover:underline"
+                >
+                  Create one here
+                </Link>
+              </p>
+            </div>
           </div>
-        </form>
+          
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-24 h-24 translate-x-12 -translate-y-12 rounded-full bg-white/10 backdrop-blur"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 -translate-x-8 translate-y-8 rounded-full bg-white/10 backdrop-blur"></div>
+        </div>
       </div>
     </div>
   );
