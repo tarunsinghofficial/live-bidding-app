@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const connectDB = require('./config/database');
 const { connectRedis } = require('./config/redis');
 
@@ -55,12 +56,32 @@ app.get("/api/time", (req, res) => {
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  const dbStatus = mongoose.connection.readyState;
+  const dbStatusText = ['disconnected', 'connected', 'connecting', 'disconnecting'][dbStatus] || 'unknown';
+  
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    database: {
+      status: dbStatusText,
+      readyState: dbStatus
+    }
+  });
 });
 
 // Auth health check
 app.get("/api/auth/health", (req, res) => {
-  res.json({ status: 'Auth routes working', timestamp: new Date().toISOString() });
+  const dbStatus = mongoose.connection.readyState;
+  const dbStatusText = ['disconnected', 'connected', 'connecting', 'disconnecting'][dbStatus] || 'unknown';
+  
+  res.json({ 
+    status: 'Auth routes working', 
+    timestamp: new Date().toISOString(),
+    database: {
+      status: dbStatusText,
+      readyState: dbStatus
+    }
+  });
 });
 
 /**
