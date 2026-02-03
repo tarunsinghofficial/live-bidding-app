@@ -19,7 +19,14 @@ const server = http.createServer(app);
 connectDB();
 // connectRedis(); // Temporarily disabled for development
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://live-bidding-app.onrender.com', 'https://live-bidding-server.onrender.com']
+    : true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-View-Id']
+}));
 app.use(express.json());
 
 // Apply rate limiting (Redis-based temporarily disabled)
@@ -49,6 +56,11 @@ app.get("/api/time", (req, res) => {
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+// Auth health check
+app.get("/api/auth/health", (req, res) => {
+  res.json({ status: 'Auth routes working', timestamp: new Date().toISOString() });
 });
 
 /**

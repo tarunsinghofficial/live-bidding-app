@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DEFAULT_API_BASE = "http://localhost:5000";
+const DEFAULT_API_BASE = "https://live-bidding-server.onrender.com";
 
 export const API_BASE =
   import.meta.env.VITE_API_URL?.trim() || DEFAULT_API_BASE;
@@ -13,6 +13,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+  console.log('API Request:', config.method?.toUpperCase(), config.url, config.baseURL);
+  
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -28,8 +30,13 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('API Response:', response.status, response.config.url);
+    return response;
+  },
   (error) => {
+    console.error('API Error:', error.response?.status, error.config?.url, error.message);
+    
     // Only logout on 401 if it's not a network error or server error
     if (error.response?.status === 401 && error.config?.url?.includes('/auth/me')) {
       // Don't logout on profile validation failure, just log warning
